@@ -723,21 +723,21 @@
       margin-bottom: 20px;
     }
 
-    .service-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+    .service-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--plum);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--rose);
+      padding-bottom: 1px;
+      transition: color 0.15s, border-color 0.15s;
     }
 
-    .tag {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: var(--bg-tint);
-      color: var(--plum);
-      border-radius: 999px;
-      padding: 3px 10px;
-    }
+    .service-link:hover { color: var(--rose); }
 
     /* ── HOW IT WORKS ── */
     .process {
@@ -1368,11 +1368,7 @@
         </div>
         <h3>Expert Opinion Letters</h3>
         <p>Professionally drafted evaluations reviewed and signed by a former USCIS officer — written to address what decision-makers actually look for.</p>
-        <div class="service-tags">
-          <span class="tag">Asylum</span>
-          <span class="tag">Refugee</span>
-          <span class="tag">Humanitarian Parole</span>
-        </div>
+        <a href="/services/expert-opinion-letters.html" class="service-link">Learn more <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="service-card">
@@ -1381,10 +1377,7 @@
         </div>
         <h3>Mock Asylum Interviews</h3>
         <p>Realistic practice sessions that prepare applicants for the pacing, tone, and scrutiny of a real USCIS interview — reducing anxiety and strengthening credibility.</p>
-        <div class="service-tags">
-          <span class="tag">Interview Prep</span>
-          <span class="tag">Credibility</span>
-        </div>
+        <a href="/services/mock-asylum-interviews.html" class="service-link">Learn more <span aria-hidden="true">→</span></a>
       </div>
 
       <div class="service-card">
@@ -1393,11 +1386,7 @@
         </div>
         <h3>Program Consultation</h3>
         <p>Advisory support for NGOs, law firms, and humanitarian programs navigating adjudication standards, policy complexity, and case strategy.</p>
-        <div class="service-tags">
-          <span class="tag">NGOs</span>
-          <span class="tag">Law Firms</span>
-          <span class="tag">Training</span>
-        </div>
+        <a href="/services/program-consultation.html" class="service-link">Learn more <span aria-hidden="true">→</span></a>
       </div>
 
     </div>

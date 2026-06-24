@@ -11,288 +11,248 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #241620;
-      --plum: #3A2438;
-      --bg: #FAF7F3;
-      --bg-tint: #F3E9EE;
-      --blue: #8FAAC2;
-      --rose: #B97478;
-      --gray: #6E6B72;
-      --line: #E5DCE3;
-      --white: #ffffff;
+      --ink: #241620; --plum: #3A2438; --bg: #FAF7F3; --bg-tint: #F3E9EE;
+      --blue: #8FAAC2; --rose: #B97478; --gray: #6E6B72; --line: #E5DCE3; --white: #ffffff;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
-    body {
-      background: #F0EAE6;
-      font-family: 'Inter', sans-serif;
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+    body { background: #F0EAE6; font-family: 'Inter', sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-    /* ── NAV ── */
+    /* ── TOP BAR ── */
     .top-bar {
-      padding: 20px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      height: 56px; background: var(--white); border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; padding: 0 24px;
+      position: sticky; top: 0; z-index: 200;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
+    .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+    .brand-wordmark { font-family: 'Lora', serif; font-weight: 700; font-size: 0.95rem; color: var(--plum); }
+    .top-bar-breadcrumb {
+      display: flex; align-items: center; gap: 8px; margin-left: 20px; padding-left: 20px;
+      border-left: 1px solid var(--line);
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; color: var(--gray);
     }
+    .top-bar-breadcrumb span { color: var(--line); }
+    .top-bar-breadcrumb strong { color: var(--ink); font-weight: 600; }
 
-    .brand-wordmark {
-      font-family: 'Lora', serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--plum);
-    }
-
-    .top-bar-right {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.82rem;
-      color: var(--gray);
-    }
-
-    .top-bar-right a {
-      color: var(--plum);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .top-bar-right a:hover { text-decoration: underline; }
-
-    /* ── LAYOUT ── */
-    .page {
-      flex: 1;
+    /* ── SHELL ── */
+    .shell {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 64px);
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 56px);
     }
 
-    @media (max-width: 800px) {
-      .page { grid-template-columns: 1fr; }
-      .panel-visual { display: none; }
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
     }
 
-    /* ── FORM PANEL ── */
-    .panel-form {
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--white);
+      border-right: 1px solid var(--line);
+      padding: 32px 0;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+
+    .sidebar-steps { list-style: none; }
+
+    .sidebar-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 24px;
+      position: relative;
+      cursor: default;
+    }
+
+    .sidebar-step::after {
+      content: '';
+      position: absolute;
+      left: 36px;
+      top: 46px;
+      width: 1px;
+      height: calc(100% - 32px);
+      background: var(--line);
+    }
+
+    .sidebar-step:last-child::after { display: none; }
+
+    .step-indicator {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px 40px;
-    }
-
-    .form-shell {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    /* step visibility */
-    .step { display: none; }
-    .step.active { display: block; }
-
-    .step-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      flex-shrink: 0;
       font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gray);
+      background: var(--white);
+      position: relative;
+      z-index: 1;
+      transition: all 0.2s;
+    }
+
+    .sidebar-step.done .step-indicator {
+      background: var(--plum);
+      border-color: var(--plum);
+      color: var(--white);
+    }
+
+    .sidebar-step.active .step-indicator {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: var(--white);
+    }
+
+    .sidebar-step.error .step-indicator {
+      background: #fee;
+      border-color: #e57373;
+      color: #c62828;
+    }
+
+    .step-info { padding-top: 3px; }
+
+    .step-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
       font-size: 0.82rem;
+      color: var(--gray);
+      margin-bottom: 2px;
+    }
+
+    .sidebar-step.active .step-name { color: var(--ink); }
+    .sidebar-step.done .step-name { color: var(--plum); }
+
+    .step-detail {
+      font-size: 0.75rem;
+      color: var(--gray);
+      opacity: 0.7;
+    }
+
+    .sidebar-support {
+      padding: 24px;
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .sidebar-support a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--gray);
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      margin-bottom: 32px;
-      transition: color 0.15s;
+      text-decoration: none;
     }
 
-    .step-back:hover { color: var(--plum); }
+    .sidebar-support a:hover { color: var(--plum); }
 
-    .step-heading {
+    /* ── MAIN ── */
+    .main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-inner {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 48px 32px;
+    }
+
+    @media (max-width: 600px) { .main-inner { padding: 32px 20px; } }
+
+    /* step panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .panel-heading {
       font-family: 'Lora', serif;
       font-weight: 700;
-      font-size: 1.7rem;
+      font-size: 1.6rem;
       color: var(--plum);
-      line-height: 1.25;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       letter-spacing: -0.02em;
     }
 
-    .step-sub {
+    .panel-sub {
       font-size: 0.9rem;
       color: var(--gray);
-      line-height: 1.65;
       margin-bottom: 32px;
+      line-height: 1.6;
     }
 
-    /* ── REQUESTER CARDS ── */
+    /* ── REQUESTER GRID ── */
     .requester-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 32px;
     }
+
+    @media (max-width: 500px) { .requester-grid { grid-template-columns: 1fr; } }
 
     .requester-card {
       background: var(--white);
       border: 1.5px solid var(--line);
       border-radius: 14px;
-      padding: 20px 14px;
+      padding: 24px 16px;
       text-align: center;
       cursor: pointer;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .requester-card:hover {
-      border-color: var(--plum);
-    }
+    .requester-card:hover { border-color: var(--plum); }
 
     .requester-card.selected {
       border-color: var(--plum);
       background: var(--bg-tint);
-      box-shadow: 0 0 0 3px rgba(58,36,56,0.08);
+      box-shadow: 0 0 0 3px rgba(58,36,56,0.07);
     }
 
-    .requester-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+    .req-icon {
+      width: 44px; height: 44px; border-radius: 12px;
       background: var(--bg-tint);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
     }
 
-    .requester-card.selected .requester-icon {
-      background: rgba(58,36,56,0.08);
-    }
+    .requester-card.selected .req-icon { background: rgba(58,36,56,0.08); }
 
-    .requester-label {
+    .req-label {
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.78rem;
-      color: var(--ink);
-    }
-
-    /* ── MATTER CARDS ── */
-    .matter-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 28px;
-    }
-
-    .matter-card {
-      background: var(--white);
-      border: 1.5px solid var(--line);
-      border-radius: 12px;
-      padding: 14px 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: border-color 0.15s;
-    }
-
-    .matter-card:hover { border-color: var(--plum); }
-
-    .matter-card.selected {
-      border-color: var(--plum);
-      background: var(--bg-tint);
-    }
-
-    .matter-card-left { display: flex; align-items: center; gap: 12px; }
-
-    .matter-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: var(--bg-tint);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .matter-card.selected .matter-icon { background: rgba(58,36,56,0.08); }
-
-    .matter-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: var(--ink);
-      margin-bottom: 1px;
-    }
-
-    .matter-desc {
-      font-size: 0.77rem;
-      color: var(--gray);
-    }
-
-    .matter-radio {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 2px solid var(--line);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.15s;
-    }
-
-    .matter-card.selected .matter-radio {
-      border-color: var(--plum);
-      background: var(--plum);
-    }
-
-    .matter-card.selected .matter-radio::after {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--white);
+      font-weight: 700; font-size: 0.85rem; color: var(--ink);
     }
 
     /* ── FORM FIELDS ── */
-    .form-group { margin-bottom: 16px; }
+    .form-group { margin-bottom: 18px; }
 
     .form-group label {
       display: block;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--gray);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--gray); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 7px;
     }
 
     .form-group input,
     .form-group textarea,
     .form-group select {
-      width: 100%;
-      background: var(--white);
-      border: 1.5px solid var(--line);
-      border-radius: 10px;
+      width: 100%; background: var(--white);
+      border: 1.5px solid var(--line); border-radius: 10px;
       padding: 12px 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.92rem;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.15s;
-      -webkit-appearance: none;
+      font-family: 'Inter', sans-serif; font-size: 0.92rem;
+      color: var(--ink); outline: none;
+      transition: border-color 0.15s; -webkit-appearance: none;
     }
 
     .form-group input:focus,
@@ -300,519 +260,582 @@
     .form-group select:focus { border-color: var(--plum); }
 
     .form-group textarea { resize: vertical; min-height: 100px; }
-
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    /* ── BUTTONS ── */
-    .btn-next {
-      width: 100%;
-      background: var(--plum);
-      color: var(--bg);
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.92rem;
-      border: none;
+    /* ── MATTER LIST ── */
+    .matter-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px; }
+
+    .matter-row {
+      background: var(--white);
+      border: 1.5px solid var(--line);
       border-radius: 12px;
-      padding: 14px 24px;
+      padding: 16px 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: space-between;
+      transition: border-color 0.15s;
+    }
+
+    .matter-row:hover { border-color: var(--plum); }
+    .matter-row.selected { border-color: var(--plum); background: var(--bg-tint); }
+
+    .matter-row-left { display: flex; align-items: center; gap: 14px; }
+
+    .matter-ico {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--bg-tint);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    .matter-row.selected .matter-ico { background: rgba(58,36,56,0.08); }
+
+    .matter-row-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.88rem; color: var(--ink); margin-bottom: 2px;
+    }
+
+    .matter-row-desc { font-size: 0.77rem; color: var(--gray); }
+
+    .radio-circle {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid var(--line); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .matter-row.selected .radio-circle {
+      border-color: var(--plum); background: var(--plum);
+    }
+
+    .matter-row.selected .radio-circle::after {
+      content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--white);
+    }
+
+    /* ── OPTIONS (turnaround, language) ── */
+    .options-section { margin-bottom: 32px; }
+
+    .options-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.95rem; color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .options-desc { font-size: 0.85rem; color: var(--gray); margin-bottom: 16px; line-height: 1.55; }
+
+    .option-rows { display: flex; flex-direction: column; gap: 8px; }
+
+    .option-row {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.15s;
+    }
+
+    .option-row:hover { border-color: var(--plum); }
+    .option-row.selected { border-color: var(--plum); background: var(--bg-tint); }
+
+    .option-row .radio-circle { flex-shrink: 0; }
+
+    .option-row-body { flex: 1; }
+
+    .option-row-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.85rem; color: var(--ink); margin-bottom: 2px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .fastest-badge {
+      background: #EDF7F0; color: #2E7D52;
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border-radius: 999px; padding: 2px 7px;
+    }
+
+    .option-row-desc { font-size: 0.77rem; color: var(--gray); }
+
+    .option-row-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.85rem; color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* ── REVIEW PANEL ── */
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) { .review-grid { grid-template-columns: 1fr; } }
+
+    .review-sections { display: flex; flex-direction: column; gap: 12px; }
+
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+
+    .review-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .review-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.85rem; color: var(--ink);
+    }
+
+    .edit-btn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem; font-weight: 600; color: var(--plum);
+      background: none; border: none; cursor: pointer; padding: 0;
+      text-decoration: underline;
+    }
+
+    .review-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      font-size: 0.85rem; padding: 5px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .review-row:last-child { border-bottom: none; }
+    .review-row-label { color: var(--gray); }
+    .review-row-value { color: var(--ink); font-weight: 500; text-align: right; max-width: 60%; }
+
+    .order-summary {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      position: sticky;
+      top: 80px;
+    }
+
+    .order-summary h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.88rem; color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .summary-item {
+      padding: 10px 0; border-bottom: 1px solid var(--line);
+    }
+
+    .summary-item:last-of-type { border-bottom: none; }
+
+    .summary-item-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.82rem; color: var(--ink); margin-bottom: 2px;
+    }
+
+    .summary-item-detail { font-size: 0.75rem; color: var(--gray); }
+
+    .conf-note {
+      display: flex; align-items: flex-start; gap: 9px;
+      margin-top: 16px; padding: 12px 14px;
+      background: var(--bg-tint); border-radius: 10px; border: 1px solid var(--line);
+    }
+
+    .conf-note p { font-size: 0.77rem; color: var(--gray); line-height: 1.55; }
+
+    /* ── NAV BUTTONS ── */
+    .nav-bar {
+      border-top: 1px solid var(--line);
+      background: var(--white);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      bottom: 0;
+    }
+
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem; font-weight: 600; color: var(--gray);
+      background: none; border: none; cursor: pointer; padding: 0;
+      transition: color 0.15s;
+    }
+
+    .btn-back:hover { color: var(--plum); }
+
+    .btn-next {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--plum); color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      border: none; border-radius: 999px;
+      padding: 12px 28px; cursor: pointer;
       transition: opacity 0.15s, transform 0.15s;
-      margin-top: 8px;
     }
 
     .btn-next:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-    .btn-next svg { flex-shrink: 0; }
-
-    /* ── PROGRESS ── */
-    .progress-bar {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 36px;
-    }
-
-    .progress-seg {
-      height: 3px;
-      border-radius: 999px;
-      flex: 1;
-      background: var(--line);
-      transition: background 0.3s;
-    }
-
-    .progress-seg.done { background: var(--plum); }
-    .progress-seg.active { background: var(--rose); }
-
-    /* ── CONFIDENTIAL NOTE ── */
-    .conf-note {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      margin-top: 16px;
-      padding: 12px 14px;
-      background: var(--bg-tint);
-      border-radius: 10px;
-      border: 1px solid var(--line);
-    }
-
-    .conf-note p {
-      font-size: 0.77rem;
-      color: var(--gray);
-      line-height: 1.55;
-    }
+    .btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
     /* ── SUCCESS ── */
     .success-screen {
       display: none;
-      text-align: center;
-      padding: 20px 0;
-    }
-
-    .success-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--bg-tint);
-      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 24px;
+      text-align: center;
+      min-height: calc(100vh - 56px);
+      padding: 48px 24px;
+    }
+
+    .success-screen.active { display: flex; }
+
+    .success-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--bg-tint);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
     }
 
     .success-screen h2 {
-      font-family: 'Lora', serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--plum);
+      font-family: 'Lora', serif; font-weight: 700;
+      font-size: 1.7rem; color: var(--plum);
       margin-bottom: 12px;
     }
 
     .success-screen p {
-      font-size: 0.92rem;
-      color: var(--gray);
-      line-height: 1.7;
-      margin-bottom: 28px;
+      font-size: 0.95rem; color: var(--gray);
+      line-height: 1.7; max-width: 440px; margin-bottom: 32px;
     }
 
     .btn-home {
       display: inline-block;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.875rem;
-      color: var(--bg);
-      background: var(--plum);
-      border-radius: 999px;
-      padding: 11px 28px;
-      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+      font-size: 0.875rem; color: var(--bg);
+      background: var(--plum); border-radius: 999px;
+      padding: 12px 32px; text-decoration: none;
       transition: opacity 0.15s;
     }
 
     .btn-home:hover { opacity: 0.88; }
-
-    /* ── VISUAL PANEL ── */
-    .panel-visual {
-      background: var(--plum);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      padding: 60px 48px;
-    }
-
-    .panel-visual::before {
-      content: '';
-      position: absolute;
-      top: -120px;
-      right: -120px;
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      border: 1px solid rgba(250,247,243,0.07);
-    }
-
-    .panel-visual::after {
-      content: '';
-      position: absolute;
-      bottom: -80px;
-      left: -80px;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      border: 1px solid rgba(250,247,243,0.05);
-    }
-
-    .visual-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 360px;
-    }
-
-    .visual-quote {
-      font-family: 'Lora', serif;
-      font-weight: 700;
-      font-size: 1.45rem;
-      color: var(--bg);
-      line-height: 1.4;
-      margin-bottom: 32px;
-      letter-spacing: -0.015em;
-    }
-
-    .visual-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .visual-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(250,247,243,0.08);
-    }
-
-    .visual-step:last-child { border-bottom: none; }
-
-    .visual-step-num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(250,247,243,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: rgba(250,247,243,0.5);
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .visual-step-num.done {
-      background: var(--rose);
-      border-color: var(--rose);
-      color: var(--white);
-    }
-
-    .visual-step h4 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--bg);
-      margin-bottom: 3px;
-    }
-
-    .visual-step p {
-      font-size: 0.78rem;
-      color: rgba(250,247,243,0.5);
-      line-height: 1.5;
-    }
-
-    .visual-step.active-step h4 { color: var(--bg); }
-    .visual-step.active-step p { color: rgba(250,247,243,0.7); }
-    .visual-step.active-step .visual-step-num {
-      border-color: rgba(250,247,243,0.5);
-      color: rgba(250,247,243,0.8);
-    }
-
-    .visual-privacy {
-      margin-top: 32px;
-      padding: 16px 18px;
-      background: rgba(250,247,243,0.05);
-      border: 1px solid rgba(250,247,243,0.1);
-      border-radius: 12px;
-      font-size: 0.78rem;
-      color: rgba(250,247,243,0.5);
-      line-height: 1.6;
-    }
   </style>
 </head>
 <body>
 
+<!-- ── TOP BAR ── -->
 <div class="top-bar">
   <a href="/" class="brand">
-    <svg width="24" height="28" viewBox="0 0 28 32" fill="none" aria-hidden="true">
+    <svg width="22" height="26" viewBox="0 0 28 32" fill="none" aria-hidden="true">
       <path d="M2 32 L2 15 Q2 2 14 2 Q26 2 26 15 L26 32 Z" fill="#3A2438"/>
       <ellipse cx="14" cy="22" rx="5" ry="6" fill="#FAF7F3"/>
     </svg>
     <span class="brand-wordmark">Candor Evaluations</span>
   </a>
-  <div class="top-bar-right">
-    Questions? <a href="mailto:info@candorevaluations.com">info@candorevaluations.com</a>
+  <div class="top-bar-breadcrumb">
+    <span>›</span>
+    <strong id="breadcrumb-label">New Request</strong>
   </div>
 </div>
 
-<div class="page">
+<!-- ── SHELL ── -->
+<div class="shell" id="main-shell">
 
-  <!-- ── FORM PANEL ── -->
-  <div class="panel-form">
-    <div class="form-shell">
-
-      <!-- STEP 1: Who is requesting -->
-      <div class="step active" id="step-1">
-        <div class="progress-bar">
-          <div class="progress-seg active"></div>
-          <div class="progress-seg"></div>
-          <div class="progress-seg"></div>
-          <div class="progress-seg"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <ul class="sidebar-steps">
+      <li class="sidebar-step active" id="nav-1">
+        <div class="step-indicator">1</div>
+        <div class="step-info">
+          <div class="step-name">Requester</div>
+          <div class="step-detail" id="nav-1-detail">Attorney, NGO, or individual</div>
         </div>
-        <h1 class="step-heading">Who is making this request?</h1>
-        <p class="step-sub">Select the option that best describes you.</p>
+      </li>
+      <li class="sidebar-step" id="nav-2">
+        <div class="step-indicator">2</div>
+        <div class="step-info">
+          <div class="step-name">Contact</div>
+          <div class="step-detail" id="nav-2-detail">Your name and email</div>
+        </div>
+      </li>
+      <li class="sidebar-step" id="nav-3">
+        <div class="step-indicator">3</div>
+        <div class="step-info">
+          <div class="step-name">Matter</div>
+          <div class="step-detail" id="nav-3-detail">Service type</div>
+        </div>
+      </li>
+      <li class="sidebar-step" id="nav-4">
+        <div class="step-indicator">4</div>
+        <div class="step-info">
+          <div class="step-name">Options</div>
+          <div class="step-detail" id="nav-4-detail">Turnaround & details</div>
+        </div>
+      </li>
+      <li class="sidebar-step" id="nav-5">
+        <div class="step-indicator">5</div>
+        <div class="step-info">
+          <div class="step-name">Review</div>
+          <div class="step-detail">Confirm and submit</div>
+        </div>
+      </li>
+    </ul>
+    <div class="sidebar-support">
+      <a href="mailto:info@candorevaluations.com">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="#6E6B72" stroke-width="1.2"/><path d="M7.5 5v3.5M7.5 10v.5" stroke="#6E6B72" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Questions? Email us
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-inner">
+
+      <!-- STEP 1: Requester -->
+      <div class="panel active" id="panel-1">
+        <h1 class="panel-heading">Who is making this request?</h1>
+        <p class="panel-sub">Select the option that best describes you.</p>
         <div class="requester-grid">
-          <div class="requester-card" data-value="attorney" onclick="selectRequester(this)">
-            <div class="requester-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="#3A2438" stroke-width="1.4"/><path d="M7 7h6M7 10h6M7 13h4" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <div class="requester-card" data-value="attorney" data-label="Attorney" onclick="selectRequester(this)">
+            <div class="req-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="2" width="16" height="18" rx="2" stroke="#3A2438" stroke-width="1.4"/><path d="M7 7h8M7 11h8M7 15h5" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
-            <div class="requester-label">Attorney</div>
+            <div class="req-label">Attorney</div>
           </div>
-          <div class="requester-card" data-value="ngo" onclick="selectRequester(this)">
-            <div class="requester-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 17V9l7-6 7 6v8a1 1 0 01-1 1H4a1 1 0 01-1-1z" stroke="#3A2438" stroke-width="1.4"/><path d="M8 17v-5h4v5" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <div class="requester-card" data-value="ngo" data-label="NGO / Program" onclick="selectRequester(this)">
+            <div class="req-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 19V9l8-7 8 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1z" stroke="#3A2438" stroke-width="1.4"/><path d="M9 20v-6h4v6" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
-            <div class="requester-label">NGO / Program</div>
+            <div class="req-label">NGO / Program</div>
           </div>
-          <div class="requester-card" data-value="individual" onclick="selectRequester(this)">
-            <div class="requester-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="#3A2438" stroke-width="1.4"/><path d="M3 17c0-3.5 3-6 7-6s7 2.5 7 6" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <div class="requester-card" data-value="individual" data-label="Individual" onclick="selectRequester(this)">
+            <div class="req-icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="#3A2438" stroke-width="1.4"/><path d="M3 19c0-4 3.5-7 8-7s8 3 8 7" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
-            <div class="requester-label">Individual</div>
+            <div class="req-label">Individual</div>
           </div>
         </div>
-        <button class="btn-next" id="btn-step1" disabled onclick="goTo(2)">
-          Continue
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
       </div>
 
-      <!-- STEP 2: Contact info -->
-      <div class="step" id="step-2">
-        <div class="progress-bar">
-          <div class="progress-seg done"></div>
-          <div class="progress-seg active"></div>
-          <div class="progress-seg"></div>
-          <div class="progress-seg"></div>
-        </div>
-        <button class="step-back" onclick="goTo(1)">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Go back
-        </button>
-        <h2 class="step-heading">Let's get started.</h2>
-        <p class="step-sub">Tell us who you are so we can follow up directly.</p>
+      <!-- STEP 2: Contact -->
+      <div class="panel" id="panel-2">
+        <h2 class="panel-heading">Let's get started.</h2>
+        <p class="panel-sub">Tell us who you are so we can follow up directly.</p>
         <div class="form-row">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="fname" placeholder="Jane" />
-          </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="lname" placeholder="Smith" />
-          </div>
+          <div class="form-group"><label>First Name</label><input type="text" id="fname" placeholder="Jane" /></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="lname" placeholder="Smith" /></div>
         </div>
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" id="email" placeholder="jane@lawfirm.com" />
-        </div>
-        <div class="form-group" id="org-group">
-          <label>Organization / Firm</label>
-          <input type="text" id="org" placeholder="Smith & Associates" />
-        </div>
-        <button class="btn-next" onclick="goTo(3)">
-          Continue
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="jane@lawfirm.com" /></div>
+        <div class="form-group" id="org-group"><label>Organization / Firm</label><input type="text" id="org" placeholder="Smith & Associates" /></div>
       </div>
 
-      <!-- STEP 3: Matter type -->
-      <div class="step" id="step-3">
-        <div class="progress-bar">
-          <div class="progress-seg done"></div>
-          <div class="progress-seg done"></div>
-          <div class="progress-seg active"></div>
-          <div class="progress-seg"></div>
-        </div>
-        <button class="step-back" onclick="goTo(2)">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Go back
-        </button>
-        <h2 class="step-heading">What do you need?</h2>
-        <p class="step-sub">Select the service that best fits your case.</p>
+      <!-- STEP 3: Matter -->
+      <div class="panel" id="panel-3">
+        <h2 class="panel-heading">What do you need?</h2>
+        <p class="panel-sub">Select the service that best fits your case.</p>
         <div class="matter-list">
-
-          <div class="matter-card" data-value="expert-opinion-asylum" onclick="selectMatter(this)">
-            <div class="matter-card-left">
-              <div class="matter-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <div class="matter-name">Expert Opinion Letter — Asylum</div>
-                <div class="matter-desc">Affirmative or defensive asylum proceedings</div>
-              </div>
+          <div class="matter-row" data-value="expert-opinion-asylum" data-label="Expert Opinion Letter — Asylum" onclick="selectMatter(this)">
+            <div class="matter-row-left">
+              <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+              <div><div class="matter-row-name">Expert Opinion Letter — Asylum</div><div class="matter-row-desc">Affirmative or defensive asylum proceedings</div></div>
             </div>
-            <div class="matter-radio"></div>
+            <div class="radio-circle"></div>
           </div>
-
-          <div class="matter-card" data-value="expert-opinion-refugee" onclick="selectMatter(this)">
-            <div class="matter-card-left">
-              <div class="matter-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <div class="matter-name">Expert Opinion Letter — Refugee</div>
-                <div class="matter-desc">Refugee status determination and related matters</div>
-              </div>
+          <div class="matter-row" data-value="expert-opinion-refugee" data-label="Expert Opinion Letter — Refugee" onclick="selectMatter(this)">
+            <div class="matter-row-left">
+              <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+              <div><div class="matter-row-name">Expert Opinion Letter — Refugee</div><div class="matter-row-desc">Refugee status and related determinations</div></div>
             </div>
-            <div class="matter-radio"></div>
+            <div class="radio-circle"></div>
           </div>
-
-          <div class="matter-card" data-value="expert-opinion-parole" onclick="selectMatter(this)">
-            <div class="matter-card-left">
-              <div class="matter-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <div class="matter-name">Expert Opinion Letter — Humanitarian Parole</div>
-                <div class="matter-desc">Humanitarian parole petitions and applications</div>
-              </div>
+          <div class="matter-row" data-value="expert-opinion-parole" data-label="Expert Opinion Letter — Humanitarian Parole" onclick="selectMatter(this)">
+            <div class="matter-row-left">
+              <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+              <div><div class="matter-row-name">Expert Opinion Letter — Humanitarian Parole</div><div class="matter-row-desc">Humanitarian parole petitions and applications</div></div>
             </div>
-            <div class="matter-radio"></div>
+            <div class="radio-circle"></div>
           </div>
-
-          <div class="matter-card" data-value="mock-interview" onclick="selectMatter(this)">
-            <div class="matter-card-left">
-              <div class="matter-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#3A2438" stroke-width="1.3"/><path d="M6 8l1.5 1.5 3-3" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div>
-                <div class="matter-name">Mock Asylum Interview</div>
-                <div class="matter-desc">Interview preparation with debrief and written notes</div>
-              </div>
+          <div class="matter-row" data-value="mock-interview" data-label="Mock Asylum Interview" onclick="selectMatter(this)">
+            <div class="matter-row-left">
+              <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#3A2438" stroke-width="1.3"/><path d="M6 8l1.5 1.5 3-3" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="matter-row-name">Mock Asylum Interview</div><div class="matter-row-desc">Interview preparation with debrief and written notes</div></div>
             </div>
-            <div class="matter-radio"></div>
+            <div class="radio-circle"></div>
           </div>
-
-          <div class="matter-card" data-value="consultation" onclick="selectMatter(this)">
-            <div class="matter-card-left">
-              <div class="matter-icon">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3z" stroke="#3A2438" stroke-width="1.3"/><path d="M5 13l1-1h4l1 1" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <div>
-                <div class="matter-name">Program Consultation</div>
-                <div class="matter-desc">Advisory support for NGOs, law firms, and humanitarian programs</div>
-              </div>
+          <div class="matter-row" data-value="consultation" data-label="Program Consultation" onclick="selectMatter(this)">
+            <div class="matter-row-left">
+              <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3z" stroke="#3A2438" stroke-width="1.3"/><path d="M5 13l1-1h4l1 1" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+              <div><div class="matter-row-name">Program Consultation</div><div class="matter-row-desc">Advisory support for NGOs, law firms, and humanitarian programs</div></div>
             </div>
-            <div class="matter-radio"></div>
+            <div class="radio-circle"></div>
           </div>
-
         </div>
-        <button class="btn-next" id="btn-step3" disabled onclick="goTo(4)">
-          Continue
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
       </div>
 
-      <!-- STEP 4: Case details -->
-      <div class="step" id="step-4">
-        <div class="progress-bar">
-          <div class="progress-seg done"></div>
-          <div class="progress-seg done"></div>
-          <div class="progress-seg done"></div>
-          <div class="progress-seg active"></div>
+      <!-- STEP 4: Options -->
+      <div class="panel" id="panel-4">
+        <h2 class="panel-heading">Options</h2>
+        <p class="panel-sub">Tell us about the timeline and any additional context.</p>
+
+        <div class="options-section">
+          <div class="options-label">Turnaround</div>
+          <div class="options-desc">When do you need the letter or session? Turnaround begins once we've received all necessary materials.</div>
+          <div class="option-rows">
+            <div class="option-row selected" data-group="turnaround" data-value="standard" data-label="Standard (5–7 business days)" onclick="selectOption(this)">
+              <div class="radio-circle" style="border-color:var(--plum);background:var(--plum);"><div style="width:7px;height:7px;border-radius:50%;background:white;"></div></div>
+              <div class="option-row-body">
+                <div class="option-row-name">Standard</div>
+                <div class="option-row-desc">5–7 business days from receipt of materials</div>
+              </div>
+              <div class="option-row-price">Included</div>
+            </div>
+            <div class="option-row" data-group="turnaround" data-value="expedited" data-label="Expedited (2–3 business days)" onclick="selectOption(this)">
+              <div class="radio-circle"></div>
+              <div class="option-row-body">
+                <div class="option-row-name">Expedited</div>
+                <div class="option-row-desc">2–3 business days — contact us to confirm availability</div>
+              </div>
+              <div class="option-row-price">+Fee</div>
+            </div>
+            <div class="option-row" data-group="turnaround" data-value="rush" data-label="Rush (next business day)" onclick="selectOption(this)">
+              <div class="radio-circle"></div>
+              <div class="option-row-body">
+                <div class="option-row-name"><span>Rush</span> <span class="fastest-badge">FASTEST</span></div>
+                <div class="option-row-desc">Next business day — subject to evaluator availability</div>
+              </div>
+              <div class="option-row-price">+Fee</div>
+            </div>
+          </div>
         </div>
-        <button class="step-back" onclick="goTo(3)">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Go back
-        </button>
-        <h2 class="step-heading">Tell us about the case.</h2>
-        <p class="step-sub">A brief description is enough to get started. We'll follow up directly to discuss details and share a secure way to send documents.</p>
+
+        <div class="options-section">
+          <div class="options-label">Document Language</div>
+          <div class="options-desc">Are the applicant's supporting documents in English?</div>
+          <div class="option-rows">
+            <div class="option-row selected" data-group="language" data-value="english" data-label="All documents in English" onclick="selectOption(this)">
+              <div class="radio-circle" style="border-color:var(--plum);background:var(--plum);"><div style="width:7px;height:7px;border-radius:50%;background:white;"></div></div>
+              <div class="option-row-body">
+                <div class="option-row-name">All documents are in English</div>
+              </div>
+            </div>
+            <div class="option-row" data-group="language" data-value="translated" data-label="Translated copies available" onclick="selectOption(this)">
+              <div class="radio-circle"></div>
+              <div class="option-row-body">
+                <div class="option-row-name">I have certified English translations</div>
+                <div class="option-row-desc">Please include translations when submitting materials</div>
+              </div>
+            </div>
+            <div class="option-row" data-group="language" data-value="not-translated" data-label="Documents not yet translated" onclick="selectOption(this)">
+              <div class="radio-circle"></div>
+              <div class="option-row-body">
+                <div class="option-row-name">Documents are not yet translated</div>
+                <div class="option-row-desc">We'll discuss next steps when we follow up</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label>Brief Description</label>
+          <label>Brief Description of the Case</label>
           <textarea id="description" placeholder="e.g. Asylum claim based on political persecution — applicant from Honduras, interview scheduled in 6 weeks. Declaration is drafted, looking for expert opinion letter support."></textarea>
         </div>
-        <div class="form-group">
-          <label>Timeline / Urgency</label>
-          <select id="urgency">
-            <option value="">Select one…</option>
-            <option>Flexible — no immediate deadline</option>
-            <option>Within 4 weeks</option>
-            <option>Within 2 weeks</option>
-            <option>Urgent — under 1 week</option>
-          </select>
-        </div>
+
         <div class="form-group">
           <label>Country of Origin (if applicable)</label>
           <input type="text" id="country" placeholder="e.g. Honduras, Ethiopia, Afghanistan" />
         </div>
-        <div class="conf-note">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0; margin-top:1px;"><rect x="5" y="1" width="6" height="5" rx="2" stroke="#6E6B72" stroke-width="1.3"/><rect x="2" y="6" width="12" height="9" rx="2" stroke="#6E6B72" stroke-width="1.3"/><circle cx="8" cy="10.5" r="1" fill="#6E6B72"/></svg>
-          <p>Everything you share is held in strict confidence. We will never share your client's information with third parties. Documents are shared separately via a secure link after we confirm the engagement.</p>
-        </div>
-        <button class="btn-next" onclick="submitForm()" style="margin-top: 16px;">
-          Submit Request
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
       </div>
 
-      <!-- SUCCESS -->
-      <div class="success-screen" id="success">
-        <div class="success-icon">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#3A2438" stroke-width="1.5"/><path d="M8 14l4 4 8-8" stroke="#3A2438" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- STEP 5: Review -->
+      <div class="panel" id="panel-5">
+        <h2 class="panel-heading">Review your request.</h2>
+        <p class="panel-sub">Confirm everything looks right before submitting.</p>
+        <div class="review-grid">
+          <div class="review-sections">
+
+            <div class="review-card">
+              <div class="review-card-header">
+                <div class="review-card-title">Requester</div>
+                <button class="edit-btn" onclick="goTo(1)">Edit</button>
+              </div>
+              <div class="review-row"><span class="review-row-label">Type</span><span class="review-row-value" id="rv-requester">—</span></div>
+              <div class="review-row"><span class="review-row-label">Name</span><span class="review-row-value" id="rv-name">—</span></div>
+              <div class="review-row"><span class="review-row-label">Email</span><span class="review-row-value" id="rv-email">—</span></div>
+              <div class="review-row" id="rv-org-row"><span class="review-row-label">Organization</span><span class="review-row-value" id="rv-org">—</span></div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-card-header">
+                <div class="review-card-title">Matter</div>
+                <button class="edit-btn" onclick="goTo(3)">Edit</button>
+              </div>
+              <div class="review-row"><span class="review-row-label">Service</span><span class="review-row-value" id="rv-matter">—</span></div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-card-header">
+                <div class="review-card-title">Options</div>
+                <button class="edit-btn" onclick="goTo(4)">Edit</button>
+              </div>
+              <div class="review-row"><span class="review-row-label">Turnaround</span><span class="review-row-value" id="rv-turnaround">—</span></div>
+              <div class="review-row"><span class="review-row-label">Documents</span><span class="review-row-value" id="rv-language">—</span></div>
+              <div class="review-row" id="rv-country-row"><span class="review-row-label">Country of Origin</span><span class="review-row-value" id="rv-country">—</span></div>
+            </div>
+
+            <div class="conf-note">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px;"><rect x="5" y="1" width="6" height="5" rx="2" stroke="#6E6B72" stroke-width="1.3"/><rect x="2" y="6" width="12" height="9" rx="2" stroke="#6E6B72" stroke-width="1.3"/><circle cx="8" cy="10.5" r="1" fill="#6E6B72"/></svg>
+              <p>Everything you share is held in strict confidence. We will never share case materials with third parties. Documents are submitted separately via a secure link after we confirm the engagement.</p>
+            </div>
+
+          </div>
+
+          <div class="order-summary">
+            <h3>Request Summary</h3>
+            <div class="summary-item">
+              <div class="summary-item-name" id="sum-matter">—</div>
+              <div class="summary-item-detail" id="sum-turnaround">Standard processing</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-item-name">Next steps</div>
+              <div class="summary-item-detail">We'll follow up within one business day to confirm availability and share a secure link for documents.</div>
+            </div>
+          </div>
         </div>
-        <h2>Request received.</h2>
-        <p>We'll follow up at the email you provided within one business day. All communications are held in strict confidence.</p>
-        <a href="/" class="btn-home">Back to Candor Evaluations</a>
       </div>
 
     </div>
-  </div>
 
-  <!-- ── VISUAL PANEL ── -->
-  <div class="panel-visual">
-    <div class="visual-inner">
-      <p class="visual-quote">"Every case read by a person — never an algorithm."</p>
-      <div class="visual-steps" id="visual-steps">
-        <div class="visual-step done" data-step="1">
-          <div class="visual-step-num done">✓</div>
-          <div>
-            <h4>Who is requesting</h4>
-            <p>Attorney, NGO, or individual applicant</p>
-          </div>
-        </div>
-        <div class="visual-step active-step" data-step="2">
-          <div class="visual-step-num">2</div>
-          <div>
-            <h4>Your contact info</h4>
-            <p>So we can follow up directly</p>
-          </div>
-        </div>
-        <div class="visual-step" data-step="3">
-          <div class="visual-step-num">3</div>
-          <div>
-            <h4>Matter type</h4>
-            <p>Asylum, refugee, parole, interview, or consultation</p>
-          </div>
-        </div>
-        <div class="visual-step" data-step="4">
-          <div class="visual-step-num">4</div>
-          <div>
-            <h4>Case details</h4>
-            <p>Brief description and timeline</p>
-          </div>
-        </div>
-      </div>
-      <div class="visual-privacy">
-        All submissions are confidential. Documents are never processed through AI tools or shared with third parties.
-      </div>
+    <!-- NAV BAR -->
+    <div class="nav-bar" id="nav-bar">
+      <button class="btn-back" id="btn-back" onclick="goBack()" style="visibility:hidden;">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="btn-next" onclick="goNext()" disabled>
+        Continue
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
   </div>
 
 </div>
 
-<!-- Hidden Formspree form for submission -->
+<!-- SUCCESS -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#3A2438" stroke-width="1.5"/><path d="M9 16l5 5 9-9" stroke="#3A2438" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <h2>Request received.</h2>
+  <p>We'll follow up at the email you provided within one business day — usually sooner. All communications are held in strict confidence.</p>
+  <a href="/" class="btn-home">Back to Candor Evaluations</a>
+</div>
+
+<!-- Hidden form for Formspree -->
 <form id="hidden-form" action="https://formspree.io/f/mqevezaz" method="POST" style="display:none;">
   <input type="hidden" name="requester_type" id="hf-requester" />
   <input type="hidden" name="first_name" id="hf-fname" />
@@ -820,86 +843,198 @@
   <input type="hidden" name="email" id="hf-email" />
   <input type="hidden" name="organization" id="hf-org" />
   <input type="hidden" name="matter_type" id="hf-matter" />
+  <input type="hidden" name="turnaround" id="hf-turnaround" />
+  <input type="hidden" name="document_language" id="hf-language" />
   <input type="hidden" name="description" id="hf-description" />
-  <input type="hidden" name="urgency" id="hf-urgency" />
   <input type="hidden" name="country" id="hf-country" />
 </form>
 
 <script>
-  let requesterType = '';
-  let matterType = '';
   let currentStep = 1;
+  const totalSteps = 5;
+
+  // state
+  let state = {
+    requester: '', requesterLabel: '',
+    fname: '', lname: '', email: '', org: '',
+    matter: '', matterLabel: '',
+    turnaround: 'standard', turnaroundLabel: 'Standard (5–7 business days)',
+    language: 'english', languageLabel: 'All documents in English',
+    description: '', country: ''
+  };
 
   function selectRequester(card) {
     document.querySelectorAll('.requester-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-    requesterType = card.dataset.value;
-    document.getElementById('btn-step1').disabled = false;
-
-    // hide org field for individuals
-    const orgGroup = document.getElementById('org-group');
-    orgGroup.style.display = requesterType === 'individual' ? 'none' : 'block';
+    state.requester = card.dataset.value;
+    state.requesterLabel = card.dataset.label;
+    document.getElementById('org-group').style.display = state.requester === 'individual' ? 'none' : 'block';
+    document.getElementById('btn-next').disabled = false;
+    updateSidebarDetail(1, state.requesterLabel);
   }
 
-  function selectMatter(card) {
-    document.querySelectorAll('.matter-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    matterType = card.dataset.value;
-    document.getElementById('btn-step3').disabled = false;
+  function selectMatter(row) {
+    document.querySelectorAll('.matter-row').forEach(r => r.classList.remove('selected'));
+    row.classList.add('selected');
+    state.matter = row.dataset.value;
+    state.matterLabel = row.dataset.label;
+    document.getElementById('btn-next').disabled = false;
+    updateSidebarDetail(3, state.matterLabel.split(' — ')[0]);
+  }
+
+  function selectOption(row) {
+    const group = row.dataset.group;
+    document.querySelectorAll(`.option-row[data-group="${group}"]`).forEach(r => {
+      r.classList.remove('selected');
+      const rc = r.querySelector('.radio-circle');
+      rc.style.borderColor = '';
+      rc.style.background = '';
+      rc.innerHTML = '';
+    });
+    row.classList.add('selected');
+    const rc = row.querySelector('.radio-circle');
+    rc.style.borderColor = 'var(--plum)';
+    rc.style.background = 'var(--plum)';
+    rc.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:white;"></div>';
+
+    if (group === 'turnaround') {
+      state.turnaround = row.dataset.value;
+      state.turnaroundLabel = row.dataset.label;
+    } else {
+      state.language = row.dataset.value;
+      state.languageLabel = row.dataset.label;
+    }
+  }
+
+  function updateSidebarDetail(step, text) {
+    const el = document.getElementById(`nav-${step}-detail`);
+    if (el && text) el.textContent = text;
   }
 
   function goTo(n) {
-    document.getElementById('step-' + currentStep).classList.remove('active');
-    document.getElementById('step-' + n).classList.add('active');
+    // save field values
+    if (currentStep === 2) {
+      state.fname = document.getElementById('fname').value;
+      state.lname = document.getElementById('lname').value;
+      state.email = document.getElementById('email').value;
+      state.org = document.getElementById('org').value;
+      updateSidebarDetail(2, state.fname ? `${state.fname} ${state.lname}` : 'Your name and email');
+    }
+    if (currentStep === 4) {
+      state.description = document.getElementById('description').value;
+      state.country = document.getElementById('country').value;
+      updateSidebarDetail(4, state.turnaroundLabel.split(' (')[0]);
+    }
+
+    // update sidebar
+    document.getElementById(`nav-${currentStep}`).classList.remove('active');
+    document.getElementById(`nav-${currentStep}`).classList.add('done');
+    document.getElementById(`nav-${currentStep}`).querySelector('.step-indicator').textContent = '✓';
+
+    document.getElementById(`panel-${currentStep}`).classList.remove('active');
+
     currentStep = n;
-    updateVisual(n);
+
+    document.getElementById(`nav-${currentStep}`).classList.remove('done');
+    document.getElementById(`nav-${currentStep}`).classList.add('active');
+    document.getElementById(`nav-${currentStep}`).querySelector('.step-indicator').textContent = currentStep;
+
+    document.getElementById(`panel-${currentStep}`).classList.add('active');
+
+    // back button
+    document.getElementById('btn-back').style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+
+    // next button label
+    const btn = document.getElementById('btn-next');
+    if (currentStep === 5) {
+      populateReview();
+      btn.textContent = '';
+      btn.innerHTML = 'Submit Request <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      btn.disabled = false;
+    } else {
+      btn.innerHTML = 'Continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      btn.disabled = (currentStep === 1 && !state.requester) || (currentStep === 3 && !state.matter);
+    }
+
+    // breadcrumb
+    const labels = ['','Requester','Contact','Matter','Options','Review'];
+    document.getElementById('breadcrumb-label').textContent = labels[currentStep];
+
     window.scrollTo(0, 0);
   }
 
-  function updateVisual(step) {
-    const vsteps = document.querySelectorAll('.visual-step');
-    vsteps.forEach((vs, i) => {
-      const sNum = i + 1;
-      vs.classList.remove('active-step');
-      const numEl = vs.querySelector('.visual-step-num');
-      if (sNum < step) {
-        numEl.textContent = '✓';
-        numEl.classList.add('done');
-      } else if (sNum === step) {
-        numEl.textContent = sNum;
-        numEl.classList.remove('done');
-        vs.classList.add('active-step');
-      } else {
-        numEl.textContent = sNum;
-        numEl.classList.remove('done');
-      }
-    });
+  function goNext() {
+    if (currentStep === 5) { submitForm(); return; }
+    goTo(currentStep + 1);
+  }
+
+  function goBack() {
+    if (currentStep <= 1) return;
+    const prev = currentStep - 1;
+    document.getElementById(`nav-${currentStep}`).classList.remove('active');
+    document.getElementById(`panel-${currentStep}`).classList.remove('active');
+
+    currentStep = prev;
+
+    document.getElementById(`nav-${currentStep}`).classList.remove('done');
+    document.getElementById(`nav-${currentStep}`).classList.add('active');
+    document.getElementById(`nav-${currentStep}`).querySelector('.step-indicator').textContent = currentStep;
+    document.getElementById(`panel-${currentStep}`).classList.add('active');
+
+    document.getElementById('btn-back').style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+
+    const btn = document.getElementById('btn-next');
+    btn.innerHTML = 'Continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    btn.disabled = (currentStep === 1 && !state.requester) || (currentStep === 3 && !state.matter);
+
+    const labels = ['','Requester','Contact','Matter','Options','Review'];
+    document.getElementById('breadcrumb-label').textContent = labels[currentStep];
+    window.scrollTo(0, 0);
+  }
+
+  function populateReview() {
+    document.getElementById('rv-requester').textContent = state.requesterLabel || '—';
+    document.getElementById('rv-name').textContent = `${state.fname} ${state.lname}`.trim() || '—';
+    document.getElementById('rv-email').textContent = state.email || '—';
+    document.getElementById('rv-org').textContent = state.org || '—';
+    document.getElementById('rv-org-row').style.display = state.requester === 'individual' ? 'none' : 'flex';
+    document.getElementById('rv-matter').textContent = state.matterLabel || '—';
+    document.getElementById('rv-turnaround').textContent = state.turnaroundLabel || '—';
+    document.getElementById('rv-language').textContent = state.languageLabel || '—';
+    document.getElementById('rv-country').textContent = state.country || '—';
+    document.getElementById('rv-country-row').style.display = state.country ? 'flex' : 'none';
+    document.getElementById('sum-matter').textContent = state.matterLabel || '—';
+    document.getElementById('sum-turnaround').textContent = state.turnaroundLabel;
   }
 
   function submitForm() {
-    // populate hidden form
-    document.getElementById('hf-requester').value = requesterType;
-    document.getElementById('hf-fname').value = document.getElementById('fname').value;
-    document.getElementById('hf-lname').value = document.getElementById('lname').value;
-    document.getElementById('hf-email').value = document.getElementById('email').value;
-    document.getElementById('hf-org').value = document.getElementById('org').value;
-    document.getElementById('hf-matter').value = matterType;
-    document.getElementById('hf-description').value = document.getElementById('description').value;
-    document.getElementById('hf-urgency').value = document.getElementById('urgency').value;
-    document.getElementById('hf-country').value = document.getElementById('country').value;
+    document.getElementById('hf-requester').value = state.requesterLabel;
+    document.getElementById('hf-fname').value = state.fname;
+    document.getElementById('hf-lname').value = state.lname;
+    document.getElementById('hf-email').value = state.email;
+    document.getElementById('hf-org').value = state.org;
+    document.getElementById('hf-matter').value = state.matterLabel;
+    document.getElementById('hf-turnaround').value = state.turnaroundLabel;
+    document.getElementById('hf-language').value = state.languageLabel;
+    document.getElementById('hf-description').value = state.description;
+    document.getElementById('hf-country').value = state.country;
 
-    // show success (in prod, submit the form first)
-    document.getElementById('step-4').classList.remove('active');
-    document.getElementById('success').style.display = 'block';
-
-    // attempt Formspree submit in background
     const form = document.getElementById('hidden-form');
     const data = new FormData(form);
-    fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+
+    document.getElementById('main-shell').style.display = 'none';
+    document.getElementById('nav-bar').style.display = 'none';
+    document.getElementById('success-screen').classList.add('active');
   }
 
-  // init visual
-  updateVisual(1);
+  // enable next on step 2 and 4 always
+  document.getElementById('panel-2').addEventListener('input', () => {
+    document.getElementById('btn-next').disabled = false;
+  });
+  document.getElementById('panel-4').addEventListener('input', () => {
+    document.getElementById('btn-next').disabled = false;
+  });
 </script>
 
 </body>

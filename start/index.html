@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Request | Candor Evaluations</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233A2438' rx='4'/%3E%3Cpath d='M8 28 L8 14 Q8 6 16 6 Q24 6 24 14 L24 28 Z' fill='%23FAF7F3'/%3E%3Cellipse cx='16' cy='20' rx='4.5' ry='5' fill='%233A2438'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #241620;
+      --plum: #3A2438;
+      --bg: #FAF7F3;
+      --bg-tint: #F3E9EE;
+      --blue: #8FAAC2;
+      --rose: #B97478;
+      --gray: #6E6B72;
+      --line: #E5DCE3;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: #F0EAE6;
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .top-bar {
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .brand-wordmark {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--plum);
+    }
+
+    .top-bar-right {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      color: var(--gray);
+    }
+
+    .top-bar-right a {
+      color: var(--plum);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .top-bar-right a:hover { text-decoration: underline; }
+
+    /* ── LAYOUT ── */
+    .page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 64px);
+    }
+
+    @media (max-width: 800px) {
+      .page { grid-template-columns: 1fr; }
+      .panel-visual { display: none; }
+    }
+
+    /* ── FORM PANEL ── */
+    .panel-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+    }
+
+    .form-shell {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* step visibility */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: 32px;
+      transition: color 0.15s;
+    }
+
+    .step-back:hover { color: var(--plum); }
+
+    .step-heading {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: var(--plum);
+      line-height: 1.25;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .step-sub {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+
+    /* ── REQUESTER CARDS ── */
+    .requester-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .requester-card {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .requester-card:hover {
+      border-color: var(--plum);
+    }
+
+    .requester-card.selected {
+      border-color: var(--plum);
+      background: var(--bg-tint);
+      box-shadow: 0 0 0 3px rgba(58,36,56,0.08);
+    }
+
+    .requester-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .requester-card.selected .requester-icon {
+      background: rgba(58,36,56,0.08);
+    }
+
+    .requester-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--ink);
+    }
+
+    /* ── MATTER CARDS ── */
+    .matter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .matter-card {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.15s;
+    }
+
+    .matter-card:hover { border-color: var(--plum); }
+
+    .matter-card.selected {
+      border-color: var(--plum);
+      background: var(--bg-tint);
+    }
+
+    .matter-card-left { display: flex; align-items: center; gap: 12px; }
+
+    .matter-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--bg-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .matter-card.selected .matter-icon { background: rgba(58,36,56,0.08); }
+
+    .matter-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 1px;
+    }
+
+    .matter-desc {
+      font-size: 0.77rem;
+      color: var(--gray);
+    }
+
+    .matter-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s;
+    }
+
+    .matter-card.selected .matter-radio {
+      border-color: var(--plum);
+      background: var(--plum);
+    }
+
+    .matter-card.selected .matter-radio::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+
+    /* ── FORM FIELDS ── */
+    .form-group { margin-bottom: 16px; }
+
+    .form-group label {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--plum); }
+
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── BUTTONS ── */
+    .btn-next {
+      width: 100%;
+      background: var(--plum);
+      color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.15s, transform 0.15s;
+      margin-top: 8px;
+    }
+
+    .btn-next:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-next svg { flex-shrink: 0; }
+
+    /* ── PROGRESS ── */
+    .progress-bar {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 36px;
+    }
+
+    .progress-seg {
+      height: 3px;
+      border-radius: 999px;
+      flex: 1;
+      background: var(--line);
+      transition: background 0.3s;
+    }
+
+    .progress-seg.done { background: var(--plum); }
+    .progress-seg.active { background: var(--rose); }
+
+    /* ── CONFIDENTIAL NOTE ── */
+    .conf-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: var(--bg-tint);
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+
+    .conf-note p {
+      font-size: 0.77rem;
+      color: var(--gray);
+      line-height: 1.55;
+    }
+
+    /* ── SUCCESS ── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--bg-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .success-screen h2 {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--plum);
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      font-size: 0.92rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .btn-home {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--bg);
+      background: var(--plum);
+      border-radius: 999px;
+      padding: 11px 28px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-home:hover { opacity: 0.88; }
+
+    /* ── VISUAL PANEL ── */
+    .panel-visual {
+      background: var(--plum);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 60px 48px;
+    }
+
+    .panel-visual::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      border: 1px solid rgba(250,247,243,0.07);
+    }
+
+    .panel-visual::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 1px solid rgba(250,247,243,0.05);
+    }
+
+    .visual-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 360px;
+    }
+
+    .visual-quote {
+      font-family: 'Lora', serif;
+      font-weight: 700;
+      font-size: 1.45rem;
+      color: var(--bg);
+      line-height: 1.4;
+      margin-bottom: 32px;
+      letter-spacing: -0.015em;
+    }
+
+    .visual-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .visual-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(250,247,243,0.08);
+    }
+
+    .visual-step:last-child { border-bottom: none; }
+
+    .visual-step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(250,247,243,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(250,247,243,0.5);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .visual-step-num.done {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: var(--white);
+    }
+
+    .visual-step h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--bg);
+      margin-bottom: 3px;
+    }
+
+    .visual-step p {
+      font-size: 0.78rem;
+      color: rgba(250,247,243,0.5);
+      line-height: 1.5;
+    }
+
+    .visual-step.active-step h4 { color: var(--bg); }
+    .visual-step.active-step p { color: rgba(250,247,243,0.7); }
+    .visual-step.active-step .visual-step-num {
+      border-color: rgba(250,247,243,0.5);
+      color: rgba(250,247,243,0.8);
+    }
+
+    .visual-privacy {
+      margin-top: 32px;
+      padding: 16px 18px;
+      background: rgba(250,247,243,0.05);
+      border: 1px solid rgba(250,247,243,0.1);
+      border-radius: 12px;
+      font-size: 0.78rem;
+      color: rgba(250,247,243,0.5);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="/" class="brand">
+    <svg width="24" height="28" viewBox="0 0 28 32" fill="none" aria-hidden="true">
+      <path d="M2 32 L2 15 Q2 2 14 2 Q26 2 26 15 L26 32 Z" fill="#3A2438"/>
+      <ellipse cx="14" cy="22" rx="5" ry="6" fill="#FAF7F3"/>
+    </svg>
+    <span class="brand-wordmark">Candor Evaluations</span>
+  </a>
+  <div class="top-bar-right">
+    Questions? <a href="mailto:info@candorevaluations.com">info@candorevaluations.com</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── FORM PANEL ── -->
+  <div class="panel-form">
+    <div class="form-shell">
+
+      <!-- STEP 1: Who is requesting -->
+      <div class="step active" id="step-1">
+        <div class="progress-bar">
+          <div class="progress-seg active"></div>
+          <div class="progress-seg"></div>
+          <div class="progress-seg"></div>
+          <div class="progress-seg"></div>
+        </div>
+        <h1 class="step-heading">Who is making this request?</h1>
+        <p class="step-sub">Select the option that best describes you.</p>
+        <div class="requester-grid">
+          <div class="requester-card" data-value="attorney" onclick="selectRequester(this)">
+            <div class="requester-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="#3A2438" stroke-width="1.4"/><path d="M7 7h6M7 10h6M7 13h4" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="requester-label">Attorney</div>
+          </div>
+          <div class="requester-card" data-value="ngo" onclick="selectRequester(this)">
+            <div class="requester-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 17V9l7-6 7 6v8a1 1 0 01-1 1H4a1 1 0 01-1-1z" stroke="#3A2438" stroke-width="1.4"/><path d="M8 17v-5h4v5" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="requester-label">NGO / Program</div>
+          </div>
+          <div class="requester-card" data-value="individual" onclick="selectRequester(this)">
+            <div class="requester-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="#3A2438" stroke-width="1.4"/><path d="M3 17c0-3.5 3-6 7-6s7 2.5 7 6" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="requester-label">Individual</div>
+          </div>
+        </div>
+        <button class="btn-next" id="btn-step1" disabled onclick="goTo(2)">
+          Continue
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- STEP 2: Contact info -->
+      <div class="step" id="step-2">
+        <div class="progress-bar">
+          <div class="progress-seg done"></div>
+          <div class="progress-seg active"></div>
+          <div class="progress-seg"></div>
+          <div class="progress-seg"></div>
+        </div>
+        <button class="step-back" onclick="goTo(1)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Go back
+        </button>
+        <h2 class="step-heading">Let's get started.</h2>
+        <p class="step-sub">Tell us who you are so we can follow up directly.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="jane@lawfirm.com" />
+        </div>
+        <div class="form-group" id="org-group">
+          <label>Organization / Firm</label>
+          <input type="text" id="org" placeholder="Smith & Associates" />
+        </div>
+        <button class="btn-next" onclick="goTo(3)">
+          Continue
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- STEP 3: Matter type -->
+      <div class="step" id="step-3">
+        <div class="progress-bar">
+          <div class="progress-seg done"></div>
+          <div class="progress-seg done"></div>
+          <div class="progress-seg active"></div>
+          <div class="progress-seg"></div>
+        </div>
+        <button class="step-back" onclick="goTo(2)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Go back
+        </button>
+        <h2 class="step-heading">What do you need?</h2>
+        <p class="step-sub">Select the service that best fits your case.</p>
+        <div class="matter-list">
+
+          <div class="matter-card" data-value="expert-opinion-asylum" onclick="selectMatter(this)">
+            <div class="matter-card-left">
+              <div class="matter-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="matter-name">Expert Opinion Letter — Asylum</div>
+                <div class="matter-desc">Affirmative or defensive asylum proceedings</div>
+              </div>
+            </div>
+            <div class="matter-radio"></div>
+          </div>
+
+          <div class="matter-card" data-value="expert-opinion-refugee" onclick="selectMatter(this)">
+            <div class="matter-card-left">
+              <div class="matter-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="matter-name">Expert Opinion Letter — Refugee</div>
+                <div class="matter-desc">Refugee status determination and related matters</div>
+              </div>
+            </div>
+            <div class="matter-radio"></div>
+          </div>
+
+          <div class="matter-card" data-value="expert-opinion-parole" onclick="selectMatter(this)">
+            <div class="matter-card-left">
+              <div class="matter-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="matter-name">Expert Opinion Letter — Humanitarian Parole</div>
+                <div class="matter-desc">Humanitarian parole petitions and applications</div>
+              </div>
+            </div>
+            <div class="matter-radio"></div>
+          </div>
+
+          <div class="matter-card" data-value="mock-interview" onclick="selectMatter(this)">
+            <div class="matter-card-left">
+              <div class="matter-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#3A2438" stroke-width="1.3"/><path d="M6 8l1.5 1.5 3-3" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div>
+                <div class="matter-name">Mock Asylum Interview</div>
+                <div class="matter-desc">Interview preparation with debrief and written notes</div>
+              </div>
+            </div>
+            <div class="matter-radio"></div>
+          </div>
+
+          <div class="matter-card" data-value="consultation" onclick="selectMatter(this)">
+            <div class="matter-card-left">
+              <div class="matter-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3z" stroke="#3A2438" stroke-width="1.3"/><path d="M5 13l1-1h4l1 1" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+              <div>
+                <div class="matter-name">Program Consultation</div>
+                <div class="matter-desc">Advisory support for NGOs, law firms, and humanitarian programs</div>
+              </div>
+            </div>
+            <div class="matter-radio"></div>
+          </div>
+
+        </div>
+        <button class="btn-next" id="btn-step3" disabled onclick="goTo(4)">
+          Continue
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- STEP 4: Case details -->
+      <div class="step" id="step-4">
+        <div class="progress-bar">
+          <div class="progress-seg done"></div>
+          <div class="progress-seg done"></div>
+          <div class="progress-seg done"></div>
+          <div class="progress-seg active"></div>
+        </div>
+        <button class="step-back" onclick="goTo(3)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Go back
+        </button>
+        <h2 class="step-heading">Tell us about the case.</h2>
+        <p class="step-sub">A brief description is enough to get started. We'll follow up directly to discuss details and share a secure way to send documents.</p>
+        <div class="form-group">
+          <label>Brief Description</label>
+          <textarea id="description" placeholder="e.g. Asylum claim based on political persecution — applicant from Honduras, interview scheduled in 6 weeks. Declaration is drafted, looking for expert opinion letter support."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Timeline / Urgency</label>
+          <select id="urgency">
+            <option value="">Select one…</option>
+            <option>Flexible — no immediate deadline</option>
+            <option>Within 4 weeks</option>
+            <option>Within 2 weeks</option>
+            <option>Urgent — under 1 week</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Country of Origin (if applicable)</label>
+          <input type="text" id="country" placeholder="e.g. Honduras, Ethiopia, Afghanistan" />
+        </div>
+        <div class="conf-note">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0; margin-top:1px;"><rect x="5" y="1" width="6" height="5" rx="2" stroke="#6E6B72" stroke-width="1.3"/><rect x="2" y="6" width="12" height="9" rx="2" stroke="#6E6B72" stroke-width="1.3"/><circle cx="8" cy="10.5" r="1" fill="#6E6B72"/></svg>
+          <p>Everything you share is held in strict confidence. We will never share your client's information with third parties. Documents are shared separately via a secure link after we confirm the engagement.</p>
+        </div>
+        <button class="btn-next" onclick="submitForm()" style="margin-top: 16px;">
+          Submit Request
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="success">
+        <div class="success-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#3A2438" stroke-width="1.5"/><path d="M8 14l4 4 8-8" stroke="#3A2438" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>Request received.</h2>
+        <p>We'll follow up at the email you provided within one business day. All communications are held in strict confidence.</p>
+        <a href="/" class="btn-home">Back to Candor Evaluations</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── VISUAL PANEL ── -->
+  <div class="panel-visual">
+    <div class="visual-inner">
+      <p class="visual-quote">"Every case read by a person — never an algorithm."</p>
+      <div class="visual-steps" id="visual-steps">
+        <div class="visual-step done" data-step="1">
+          <div class="visual-step-num done">✓</div>
+          <div>
+            <h4>Who is requesting</h4>
+            <p>Attorney, NGO, or individual applicant</p>
+          </div>
+        </div>
+        <div class="visual-step active-step" data-step="2">
+          <div class="visual-step-num">2</div>
+          <div>
+            <h4>Your contact info</h4>
+            <p>So we can follow up directly</p>
+          </div>
+        </div>
+        <div class="visual-step" data-step="3">
+          <div class="visual-step-num">3</div>
+          <div>
+            <h4>Matter type</h4>
+            <p>Asylum, refugee, parole, interview, or consultation</p>
+          </div>
+        </div>
+        <div class="visual-step" data-step="4">
+          <div class="visual-step-num">4</div>
+          <div>
+            <h4>Case details</h4>
+            <p>Brief description and timeline</p>
+          </div>
+        </div>
+      </div>
+      <div class="visual-privacy">
+        All submissions are confidential. Documents are never processed through AI tools or shared with third parties.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Hidden Formspree form for submission -->
+<form id="hidden-form" action="https://formspree.io/f/placeholder" method="POST" style="display:none;">
+  <input type="hidden" name="requester_type" id="hf-requester" />
+  <input type="hidden" name="first_name" id="hf-fname" />
+  <input type="hidden" name="last_name" id="hf-lname" />
+  <input type="hidden" name="email" id="hf-email" />
+  <input type="hidden" name="organization" id="hf-org" />
+  <input type="hidden" name="matter_type" id="hf-matter" />
+  <input type="hidden" name="description" id="hf-description" />
+  <input type="hidden" name="urgency" id="hf-urgency" />
+  <input type="hidden" name="country" id="hf-country" />
+</form>
+
+<script>
+  let requesterType = '';
+  let matterType = '';
+  let currentStep = 1;
+
+  function selectRequester(card) {
+    document.querySelectorAll('.requester-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    requesterType = card.dataset.value;
+    document.getElementById('btn-step1').disabled = false;
+
+    // hide org field for individuals
+    const orgGroup = document.getElementById('org-group');
+    orgGroup.style.display = requesterType === 'individual' ? 'none' : 'block';
+  }
+
+  function selectMatter(card) {
+    document.querySelectorAll('.matter-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    matterType = card.dataset.value;
+    document.getElementById('btn-step3').disabled = false;
+  }
+
+  function goTo(n) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    document.getElementById('step-' + n).classList.add('active');
+    currentStep = n;
+    updateVisual(n);
+    window.scrollTo(0, 0);
+  }
+
+  function updateVisual(step) {
+    const vsteps = document.querySelectorAll('.visual-step');
+    vsteps.forEach((vs, i) => {
+      const sNum = i + 1;
+      vs.classList.remove('active-step');
+      const numEl = vs.querySelector('.visual-step-num');
+      if (sNum < step) {
+        numEl.textContent = '✓';
+        numEl.classList.add('done');
+      } else if (sNum === step) {
+        numEl.textContent = sNum;
+        numEl.classList.remove('done');
+        vs.classList.add('active-step');
+      } else {
+        numEl.textContent = sNum;
+        numEl.classList.remove('done');
+      }
+    });
+  }
+
+  function submitForm() {
+    // populate hidden form
+    document.getElementById('hf-requester').value = requesterType;
+    document.getElementById('hf-fname').value = document.getElementById('fname').value;
+    document.getElementById('hf-lname').value = document.getElementById('lname').value;
+    document.getElementById('hf-email').value = document.getElementById('email').value;
+    document.getElementById('hf-org').value = document.getElementById('org').value;
+    document.getElementById('hf-matter').value = matterType;
+    document.getElementById('hf-description').value = document.getElementById('description').value;
+    document.getElementById('hf-urgency').value = document.getElementById('urgency').value;
+    document.getElementById('hf-country').value = document.getElementById('country').value;
+
+    // show success (in prod, submit the form first)
+    document.getElementById('step-4').classList.remove('active');
+    document.getElementById('success').style.display = 'block';
+
+    // attempt Formspree submit in background
+    const form = document.getElementById('hidden-form');
+    const data = new FormData(form);
+    fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+  }
+
+  // init visual
+  updateVisual(1);
+</script>
+
+</body>
+</html>

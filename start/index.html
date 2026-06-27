@@ -661,24 +661,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <h2 class="panel-heading">What do you need?</h2>
         <p class="panel-sub">Select the service that best fits your case.</p>
         <div class="matter-list">
-          <div class="matter-row" data-value="expert-opinion-asylum" data-label="Expert Opinion Letter — Asylum" onclick="selectMatter(this)">
+          <div class="matter-row" data-value="expert-opinion-asylum" data-label="Expert Opinion Letter: Asylum" onclick="selectMatter(this)">
             <div class="matter-row-left">
               <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-              <div><div class="matter-row-name">Expert Opinion Letter — Asylum</div><div class="matter-row-desc">Affirmative or defensive asylum proceedings</div></div>
+              <div><div class="matter-row-name">Expert Opinion Letter: Asylum</div><div class="matter-row-desc">Affirmative or defensive asylum proceedings</div></div>
             </div>
             <div class="radio-circle"></div>
           </div>
-          <div class="matter-row" data-value="expert-opinion-refugee" data-label="Expert Opinion Letter — Refugee" onclick="selectMatter(this)">
+          <div class="matter-row" data-value="expert-opinion-refugee" data-label="Expert Opinion Letter: Refugee" onclick="selectMatter(this)">
             <div class="matter-row-left">
               <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-              <div><div class="matter-row-name">Expert Opinion Letter — Refugee</div><div class="matter-row-desc">Refugee status and related determinations</div></div>
+              <div><div class="matter-row-name">Expert Opinion Letter: Refugee</div><div class="matter-row-desc">Refugee status and related determinations</div></div>
             </div>
             <div class="radio-circle"></div>
           </div>
-          <div class="matter-row" data-value="expert-opinion-parole" data-label="Expert Opinion Letter — Humanitarian Parole" onclick="selectMatter(this)">
+          <div class="matter-row" data-value="expert-opinion-parole" data-label="Expert Opinion Letter: Humanitarian Parole" onclick="selectMatter(this)">
             <div class="matter-row-left">
               <div class="matter-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="1.5" stroke="#3A2438" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="#3A2438" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-              <div><div class="matter-row-name">Expert Opinion Letter — Humanitarian Parole</div><div class="matter-row-desc">Humanitarian parole petitions and applications</div></div>
+              <div><div class="matter-row-name">Expert Opinion Letter: Humanitarian Parole</div><div class="matter-row-desc">Humanitarian parole petitions and applications</div></div>
             </div>
             <div class="radio-circle"></div>
           </div>
@@ -720,7 +720,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="radio-circle"></div>
               <div class="option-row-body">
                 <div class="option-row-name">Expedited</div>
-                <div class="option-row-desc">2–3 business days — contact us to confirm availability</div>
+                <div class="option-row-desc">2–3 business days. Contact us to confirm availability</div>
               </div>
               <div class="option-row-price">+Fee</div>
             </div>
@@ -728,7 +728,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="radio-circle"></div>
               <div class="option-row-body">
                 <div class="option-row-name"><span>Rush</span> <span class="fastest-badge">FASTEST</span></div>
-                <div class="option-row-desc">Next business day — subject to evaluator availability</div>
+                <div class="option-row-desc">Next business day. Subject to evaluator availability</div>
               </div>
               <div class="option-row-price">+Fee</div>
             </div>
@@ -764,7 +764,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="form-group">
           <label>Brief Description of the Case</label>
-          <textarea id="description" placeholder="e.g. Asylum claim based on political persecution — applicant from Honduras, interview scheduled in 6 weeks. Declaration is drafted, looking for expert opinion letter support."></textarea>
+          <textarea id="description" placeholder="e.g. Asylum claim based on political persecution, applicant from Honduras, interview scheduled in 6 weeks. Declaration is drafted, looking for expert opinion letter support."></textarea>
         </div>
 
         <div class="form-group">
@@ -853,7 +853,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="#3A2438" stroke-width="1.5"/><path d="M9 16l5 5 9-9" stroke="#3A2438" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <h2>Request received.</h2>
-  <p>We'll follow up at the email you provided within one business day — usually sooner. All communications are held in strict confidence.</p>
+  <p>We'll follow up at the email you provided within one business day, usually sooner. All communications are held in strict confidence.</p>
   <a href="/" class="btn-home">Back to Candor Evaluations</a>
 </div>
 
@@ -901,7 +901,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     state.matter = row.dataset.value;
     state.matterLabel = row.dataset.label;
     document.getElementById('btn-next').disabled = false;
-    updateSidebarDetail(3, state.matterLabel.split(' — ')[0]);
+    updateSidebarDetail(3, state.matterLabel.split(', ')[0]);
   }
 
   function selectOption(row) {

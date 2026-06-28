@@ -574,7 +574,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="step-indicator">1</div>
         <div class="step-info">
           <div class="step-name">Requester</div>
-          <div class="step-detail" id="nav-1-detail">Attorney, NGO, or individual</div>
+          <div class="step-detail" id="nav-1-detail">Attorney or NGO / Program</div>
         </div>
       </li>
       <li class="sidebar-step" id="nav-2">
@@ -634,12 +634,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 19V9l8-7 8 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1z" stroke="#3A2438" stroke-width="1.4"/><path d="M9 20v-6h4v6" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
             <div class="req-label">NGO / Program</div>
-          </div>
-          <div class="requester-card" data-value="individual" data-label="Individual" onclick="selectRequester(this)">
-            <div class="req-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="#3A2438" stroke-width="1.4"/><path d="M3 19c0-4 3.5-7 8-7s8 3 8 7" stroke="#3A2438" stroke-width="1.4" stroke-linecap="round"/></svg>
-            </div>
-            <div class="req-label">Individual</div>
           </div>
         </div>
       </div>
@@ -890,7 +884,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     card.classList.add('selected');
     state.requester = card.dataset.value;
     state.requesterLabel = card.dataset.label;
-    document.getElementById('org-group').style.display = state.requester === 'individual' ? 'none' : 'block';
+    document.getElementById('org-group').style.display = 'block';
     document.getElementById('btn-next').disabled = false;
     updateSidebarDetail(1, state.requesterLabel);
   }
@@ -1019,7 +1013,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('rv-name').textContent = `${state.fname} ${state.lname}`.trim() || '—';
     document.getElementById('rv-email').textContent = state.email || '—';
     document.getElementById('rv-org').textContent = state.org || '—';
-    document.getElementById('rv-org-row').style.display = state.requester === 'individual' ? 'none' : 'flex';
+    document.getElementById('rv-org-row').style.display = 'flex';
     document.getElementById('rv-matter').textContent = state.matterLabel || '—';
     document.getElementById('rv-turnaround').textContent = state.turnaroundLabel || '—';
     document.getElementById('rv-language').textContent = state.languageLabel || '—';

@@ -556,7 +556,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="brand-wordmark">Candor Evaluations</span>
   </a>
   <div class="top-bar-breadcrumb">
-    <span>›</span>
+    <span id="breadcrumb-ref" style="font-family:'Space Grotesk',sans-serif;font-size:0.78rem;color:var(--gray);font-weight:500;"></span>
+    <span style="color:var(--line);margin:0 2px;">›</span>
     <strong id="breadcrumb-label">New Request</strong>
   </div>
 </div>
@@ -887,9 +888,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <input type="hidden" name="description" id="hf-description" />
   <input type="hidden" name="country" id="hf-country" />
   <input type="hidden" name="total_price" id="hf-price" />
+  <input type="hidden" name="request_id" id="hf-request-id" />
 </form>
 
 <script>
+  // Generate request ID
+  function genRequestId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const seg = (n) => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+    return 'CE-' + seg(8) + '-' + seg(4);
+  }
+  const REQUEST_ID = genRequestId();
+  document.getElementById('breadcrumb-ref').textContent = 'Request #' + REQUEST_ID;
+  document.getElementById('hf-request-id').value = REQUEST_ID;
+
   let currentStep = 1;
   const totalSteps = 5;
 

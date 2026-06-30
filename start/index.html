@@ -170,18 +170,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: flex;
       flex-direction: column;
       min-width: 0;
+      padding: 0 80px;
     }
 
     .main-inner {
       flex: 1;
-      width: 100%;
-      max-width: 680px;
-      padding: 48px 40px 32px;
-      box-sizing: border-box;
+      padding: 48px 0 32px;
+      max-width: 600px;
     }
 
-    @media (max-width: 860px) { .main-inner { max-width: 100%; padding: 32px 24px 24px; } }
-    @media (max-width: 500px) { .main-inner { padding: 24px 16px 16px; } }
+    @media (max-width: 860px) { .main { padding: 0 32px; } .main-inner { max-width: 100%; } }
+    @media (max-width: 500px) { .main { padding: 0 16px; } .main-inner { padding: 24px 0 16px; } }
 
     /* step panels */
     .panel { display: none; }
@@ -462,18 +461,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .nav-bar {
       border-top: 1px solid var(--line);
       background: var(--white);
-      padding: 16px 40px;
+      padding: 16px 80px;
       position: sticky;
       bottom: 0;
-      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-sizing: border-box;
-      max-width: 680px;
     }
     .nav-bar-inner { display: contents; }
-    @media (max-width: 860px) { .nav-bar { max-width: 100%; padding: 14px 24px; } }
+    @media (max-width: 860px) { .nav-bar { padding: 14px 32px; } }
     @media (max-width: 500px) { .nav-bar { padding: 12px 16px; } }
 
     .btn-back {

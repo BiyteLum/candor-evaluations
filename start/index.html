@@ -319,14 +319,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border: 2px solid #C0B8BE; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.15s;
+      position: relative;
     }
+    .radio-circle::after { content: none; }
     .matter-row.selected .radio-circle,
     .option-row.selected .radio-circle {
       border-color: var(--plum); background: var(--plum);
     }
     .matter-row.selected .radio-circle::after,
     .option-row.selected .radio-circle::after {
-      content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--white);
+      content: ''; position: absolute;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--white);
     }
 
     /* ── OPTION ROWS ── */
@@ -457,11 +460,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border-top: 1px solid var(--line);
       background: var(--white);
       padding: 16px 32px;
+      position: sticky;
+      bottom: 0;
+    }
+    .nav-bar-inner {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      bottom: 0;
     }
 
     .btn-back {
@@ -852,14 +860,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- NAV BAR -->
     <div class="nav-bar" id="nav-bar">
-      <button class="btn-back" id="btn-back" onclick="goBack()" style="visibility:hidden;">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Back
-      </button>
-      <button class="btn-next" id="btn-next" onclick="goNext()" disabled>
-        Continue
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <div class="nav-bar-inner">
+        <button class="btn-back" id="btn-back" onclick="goBack()" style="visibility:hidden;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 7H4M6 4l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <button class="btn-next" id="btn-next" onclick="goNext()" disabled>
+          Continue
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 

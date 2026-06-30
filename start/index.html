@@ -168,6 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: flex;
       flex-direction: column;
       background: var(--white);
+      min-height: calc(100vh - 56px);
     }
 
     .main-inner {
@@ -175,10 +176,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       max-width: 680px;
       width: 100%;
       margin: 0 auto;
-      padding: 48px 32px;
+      padding: 48px 32px 32px;
     }
 
-    @media (max-width: 600px) { .main-inner { padding: 32px 20px; } }
+    @media (max-width: 600px) { .main-inner { padding: 32px 20px 24px; } }
 
     /* step panels */
     .panel { display: none; }

@@ -457,19 +457,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .nav-bar {
       border-top: 1px solid var(--line);
       background: var(--white);
-      padding: 16px 0;
       position: sticky;
       bottom: 0;
       width: 100%;
+    }
+    .nav-bar-inner {
       max-width: 580px;
+      margin: 0 auto;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-sizing: border-box;
     }
-    .nav-bar-inner { display: contents; }
-    @media (max-width: 860px) { .nav-bar { width: 100%; padding: 14px 28px; } }
-    @media (max-width: 500px) { .nav-bar { padding: 12px 20px; } }
+    @media (max-width: 860px) { .nav-bar-inner { padding: 14px 28px; } }
+    @media (max-width: 500px) { .nav-bar-inner { padding: 12px 20px; } }
 
     .btn-back {
       display: flex; align-items: center; gap: 6px;
@@ -489,7 +490,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border: none; border-radius: 999px;
       padding: 12px 28px; cursor: pointer;
       transition: opacity 0.15s, transform 0.15s;
-      margin-left: auto;
     }
 
     .btn-next:hover { opacity: 0.88; transform: translateY(-1px); }

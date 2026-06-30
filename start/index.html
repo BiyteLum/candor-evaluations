@@ -172,13 +172,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
     .main-inner {
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 40px 24px 32px;
+      max-width: 660px;
+      padding: 40px 48px 32px;
       box-sizing: border-box;
     }
 
-    @media (max-width: 860px) { .main-inner { padding: 32px 28px 24px; } }
+    @media (max-width: 860px) { .main-inner { max-width: 100%; padding: 32px 28px 24px; } }
     @media (max-width: 500px) { .main-inner { padding: 24px 20px 16px; } }
 
     /* step panels */
@@ -463,9 +462,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       z-index: 50;
     }
     .nav-bar-inner {
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 16px 24px;
+      max-width: 660px;
+      padding: 16px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -473,7 +471,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     @media (max-width: 860px) {
       .nav-bar { left: 0; }
-      .nav-bar-inner { padding: 14px 28px; }
+      .nav-bar-inner { max-width: 100%; padding: 14px 28px; }
     }
     @media (max-width: 500px) { .nav-bar-inner { padding: 12px 20px; } }
 
